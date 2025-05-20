@@ -54,11 +54,12 @@ export class AppController {
       });
 
       // `verify` already throws on expiry; role check is manual
-      if (allowedRoles.length && !allowedRoles.includes(payload.role)) {
+      if (allowedRoles.length && !allowedRoles.includes(Number(payload.role) as Role)) {
         return false;
       }
       return true;
-    } catch {
+    } catch(err) {
+      console.log(err);
       return false;
     }
   }
@@ -93,7 +94,7 @@ export class AppController {
   }
 
   @Post('/changeRole')
-  changeRole(@Body() role: Role, @Headers('authorization') authHeader: string): Observable<string> {
+  changeRole(@Body() role: Role, @Headers('Authorization') authHeader: string): Observable<string> {
     if(!this.checkToken(authHeader, [Role.admin])) {
         return of("Unauthorized");
     }
@@ -101,7 +102,7 @@ export class AppController {
   }
 
   @Post('/changeRoleOf')
-  changeRoleOf(@Body() user: UserInfo, @Headers('authorization') authHeader: string): Observable<string> {
+  changeRoleOf(@Body() user: UserInfo, @Headers('Authorization') authHeader: string): Observable<string> {
     if(!this.checkToken(authHeader, [Role.admin])) {
         return of("Unauthorized");
     }
@@ -111,7 +112,7 @@ export class AppController {
   // @@@@@@@@@@@@@@ EVENT SERVER @@@@@@@@@@@@@@@@@
 
   @Post('/createEvent')
-  eventRegister( @Body() event: EventInfo, @Headers('authorization') authHeader: string): Observable<string> {
+  eventRegister( @Body() event: EventInfo, @Headers('Authorization') authHeader: string): Observable<string> {
     if (!this.checkToken(authHeader, [Role.admin, Role.operator])) {
       return of('Unauthorized');
     }
@@ -124,7 +125,7 @@ export class AppController {
   }
 
   @Post('/editEvent')
-  editEvent( @Body() event: EventInfo, @Headers('authorization') authHeader: string): Observable<string> {
+  editEvent( @Body() event: EventInfo, @Headers('Authorization') authHeader: string): Observable<string> {
     if(!this.checkToken(authHeader, [Role.admin, Role.operator])) {
         return of('Unauthorized');
     }
@@ -132,7 +133,7 @@ export class AppController {
   }
 
   @Post('/requestReward')
-  requestReward( @Body('requestInfo') info: EventRequestInfo, @Headers('authorization') authHeader: string): Observable<string> {
+  requestReward( @Body('requestInfo') info: EventRequestInfo, @Headers('Authorization') authHeader: string): Observable<string> {
     if(!this.checkToken(authHeader, [Role.admin, Role.operator])) {
         return of('Unauthorized');
     }
@@ -140,7 +141,7 @@ export class AppController {
   }
 
   @Get('/getRewardRequestHistory')
-  getRewardRequestHistory( @Query('requestid') id: string, @Headers('authorization') authHeader: string): Observable<string> {
+  getRewardRequestHistory( @Query('requestid') id: string, @Headers('Authorization') authHeader: string): Observable<string> {
     if(!this.checkToken(authHeader, [Role.admin, Role.operator, Role.auditor])) {
         return of('Unauthorized');
     }

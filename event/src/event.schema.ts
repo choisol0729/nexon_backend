@@ -12,10 +12,11 @@ export const EventSchema = new Schema(
 
 export const EventRequestSchema = new Schema(
   {
+    userid:      { type: String, required: true },
     requestid:   { type: String, required: true, unique: true },
     eventid:     { type: String, required: true },
     token:       { type: String, required: true },
-    requestedAt: { type: Date,   required: true, default: Date.now },
+    success:     { type: Boolean },
   },
   { collection: 'reward_requests' },
 );
