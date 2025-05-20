@@ -26,9 +26,11 @@ interface EventInfo {
 }
 
 interface EventRequestInfo {
+    userid: string,
     requestid: string,
     eventid: string, 
-    token: string
+    token: string,
+    success: boolean,
 }
 
 @Controller()
@@ -134,7 +136,7 @@ export class AppController {
 
   @Post('/requestReward')
   requestReward( @Body('requestInfo') info: EventRequestInfo, @Headers('Authorization') authHeader: string): Observable<string> {
-    if(!this.checkToken(authHeader, [Role.admin, Role.operator])) {
+    if(!this.checkToken(authHeader, [Role.user])) {
         return of('Unauthorized');
     }
     return this.eventProxy.send({ cmd: 'requestReward'}, info);
