@@ -7,7 +7,7 @@ export class ConfigService {
     this.envConfig.service = {
       transport: Transport.TCP,
       options: {
-        host: "127.0.0.1",
+        host: "event",
         port: 3002,
       },
     };

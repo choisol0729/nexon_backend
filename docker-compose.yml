@@ -1,9 +1,9 @@
-version: "3.9"
-
 services:
   auth:
-    build: ./auth
-    container_name: auth-service
+    build: 
+      context: ./auth
+      dockerfile: Dockerfile
+    container_name: auth
     environment:
       - HOST=0.0.0.0
       - PORT=3001
@@ -11,8 +11,10 @@ services:
       - "3001:3001"
 
   event:
-    build: ./event
-    container_name: event-service
+    build: 
+      context: ./event
+      dockerfile: Dockerfile
+    container_name: event
     environment:
       - HOST=0.0.0.0
       - PORT=3002
@@ -20,17 +22,18 @@ services:
       - "3002:3002"
 
   gateway:
-    build: ./gateway
+    build: 
+      context: ./gateway
+      dockerfile: Dockerfile
     container_name: gateway
     depends_on:
       - auth
       - event
     environment:
       - PORT=3000
-      # Tell gateway where to find the micro-services over the Docker network
-      - AUTH_HOST=auth-service
+      - AUTH_HOST=auth
       - AUTH_PORT=3001
-      - EVENT_HOST=event-service
+      - EVENT_HOST=event
       - EVENT_PORT=3002
     ports:
       - "3000:3000"

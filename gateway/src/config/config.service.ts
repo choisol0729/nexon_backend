@@ -20,7 +20,7 @@ export class ConfigService {
       name: AUTH_SERVICE,
       transport: Transport.TCP,
       options: {
-        host: HOST,
+        host: "auth",
         port: Number(AUTH_PORT),
       },
     };
@@ -29,7 +29,7 @@ export class ConfigService {
       name: EVENT_SERVICE,
       transport: Transport.TCP,
       options: {
-        host: HOST,
+        host: "event",
         port: Number(EVENT_PORT),
       },
     };
